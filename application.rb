@@ -49,11 +49,8 @@ class StatTracker < Sinatra::Application
   end
 
   get '/' do
+    bump_logged_in
     erb :index
-  end
-
-  get '/auth/login' do
-    erb :login
   end
 
   post '/auth/login' do
@@ -73,18 +70,36 @@ class StatTracker < Sinatra::Application
     session[:return_to] = env['warden.options'][:attempted_path]
     puts env['warden.options'][:attempted_path]
     flash[:error] = env['warden'].message || "Must log in."
-    redirect '/auth/login'
+    redirect '/'
   end
 
   get '/dash' do
-    authorize!
+    bump_logged_out
     @current_user = env['warden'].user
     erb :dash
   end
 
+  get '/create_account' do
+    bump_logged_in
+    # could use a flash or whatever here to tell them they're already loged in
+    erb :create_account
+  end
+
   private
 
-  def authorize!
-    redirect '/' unless env['warden'].user
+  def logged_in?
+    env['warden'].user
+  end
+
+  def logged_out?
+    !logged_in?
+  end
+
+  def bump_logged_in
+    redirect '/dash' if logged_in?
+  end
+
+  def bump_logged_out
+    redirect '/' if logged_out?
   end
 end
