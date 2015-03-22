@@ -81,8 +81,28 @@ class StatTracker < Sinatra::Application
 
   get '/create_account' do
     bump_logged_in
-    # could use a flash or whatever here to tell them they're already loged in
+    # could use a flash or whatever here to tell them they're already logged in
     erb :create_account
+  end
+
+  post '/create_account' do
+    username = params[:username]
+    password = params[:password]
+    confirmation = params[:confirmation]
+
+    if User.first(:username => username)
+      # user exists, flash it
+      redirect '/create_account'
+    else
+      if password == confirmation
+        user = User.create(:username => username, :password => password)
+        env['warden'].set_user(user)
+        redirect '/dash'
+      else
+        # passwords didn't match, flash it
+        redirect '/create_account'
+      end
+    end
   end
 
   private
@@ -95,6 +115,7 @@ class StatTracker < Sinatra::Application
     !logged_in?
   end
 
+  # maybe we should define the flash here
   def bump_logged_in
     redirect '/dash' if logged_in?
   end
