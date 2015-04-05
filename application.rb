@@ -105,6 +105,16 @@ class StatTracker < Sinatra::Application
     end
   end
 
+  get '/list' do
+    bump_logged_out
+    erb :list
+  end
+
+  get 'new' do
+    bump_logged_out
+    erb :new
+  end
+
   private
 
   def logged_in?
