@@ -110,9 +110,28 @@ class StatTracker < Sinatra::Application
     erb :list
   end
 
-  get 'new' do
+  get '/new' do
     bump_logged_out
     erb :new
+  end
+
+  post '/new_record' do
+    user = env['warden'].user
+    record = user.records.first_or_new(:name => params['inputName'])
+    unless record.id.nil?
+      redirect :new
+      #TODO: and flash about it
+    end
+    record.name = params['inputName']
+    record.type = params['inputType']
+    result = record.save
+    case result
+    when true
+      redirect :dash
+    when false
+      redirect :new
+      #and flash about it
+    end
   end
 
   private
@@ -125,7 +144,7 @@ class StatTracker < Sinatra::Application
     !logged_in?
   end
 
-  # maybe we should define the flash here
+  #TODO: maybe we should define the flash here
   def bump_logged_in
     redirect '/dash' if logged_in?
   end

@@ -1,0 +1,25 @@
+<div class="page-header">
+  <h1> Create a new Record</h1>
+</div>
+<div class="row">
+  <form action='/new_record' method='POST' class='form-record'>
+    <div class="form-group">
+      <label for="inputName"> Name for Record </label>
+      <input type="text" class="form-control" id="inputName" placeholder="Enter Record Name" name="inputName" required autofocus>
+    </div>
+    <div class="radio">
+      <label>
+        <input type="radio" name="inputType" id="inputType1" value="text" checked>
+        Text data
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        <input type="radio" name="inputType" id="inputType2" value="numeric">
+        Numeric data
+      </label>
+    </div>
+
+    <button class="btn btn-lg btn-success btn-block" type="submit"> Create Record </button>
+  </form>
+</div>
