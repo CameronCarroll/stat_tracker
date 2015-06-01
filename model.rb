@@ -1,10 +1,10 @@
 require 'rubygems'
 require 'bundler/setup'
 require 'data_mapper'
-require 'dm-sqlite-adapter'
 require 'bcrypt'
+require 'dm-postgres-adapter'
 
-DataMapper.setup(:default, ENV['DATABASE_URL'] || 'postgres://localhost/mydb')
+DataMapper.setup(:default, 'postgres://localhost/mydb')
 
 class User
   include DataMapper::Resource
