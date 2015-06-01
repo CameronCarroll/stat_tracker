@@ -4,7 +4,7 @@ require 'data_mapper'
 require 'bcrypt'
 require 'dm-postgres-adapter'
 
-DataMapper.setup(:default, 'postgres://localhost/mydb')
+DataMapper.setup(:default, ENV['DATABASE_URL'] || 'postgres://localhost/mydb')
 
 class User
   include DataMapper::Resource
