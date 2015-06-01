@@ -36,6 +36,7 @@ class Datum
 
   property :id, Serial
   property :value, String
+  property :date, DateTime
 
   belongs_to :record
 end
