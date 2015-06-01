@@ -1,0 +1,10 @@
+<div class="page-header">
+  <h1> Your Records </h1>
+</div>
+<div class="col-md-5">
+  <div class="btn-group-vertical">
+    <% @records.each do |record| %>
+      <a href="/view_record/<%=record.id%>" class="btn btn-default"><%= record.name %></a>
+    <% end %>
+  </div>
+</div>

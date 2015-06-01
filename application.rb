@@ -75,13 +75,13 @@ class StatTracker < Sinatra::Application
 
   get '/dash' do
     bump_logged_out
-    @current_user = env['warden'].user
+    @user = env['warden'].user
     erb :dash
   end
 
   get '/create_account' do
     bump_logged_in
-    # could use a flash or whatever here to tell them they're already logged in
+    #TODO: could use a flash or whatever here to tell them they're already logged in
     erb :create_account
   end
 
@@ -91,7 +91,7 @@ class StatTracker < Sinatra::Application
     confirmation = params[:confirmation]
 
     if User.first(:username => username)
-      # user exists, flash it
+      #TODO: user exists, flash it
       redirect '/create_account'
     else
       if password == confirmation
@@ -99,7 +99,7 @@ class StatTracker < Sinatra::Application
         env['warden'].set_user(user)
         redirect '/dash'
       else
-        # passwords didn't match, flash it
+        #TODO: passwords didn't match, flash it
         redirect '/create_account'
       end
     end
@@ -107,6 +107,8 @@ class StatTracker < Sinatra::Application
 
   get '/list' do
     bump_logged_out
+    user = env['warden'].user
+    @records = user.records
     erb :list
   end
 
@@ -130,7 +132,42 @@ class StatTracker < Sinatra::Application
       redirect :dash
     when false
       redirect :new
-      #and flash about it
+      #TODO: and flash about it
+    end
+  end
+
+  get '/view_record/:id' do
+    bump_logged_out
+    record = Record.get(params['id'])
+    user = env['warden'].user
+    if record
+      if record.user_id == user.id
+        @data = user.records.get(record.id).data
+        @record_name = record.name
+        @record_id = record.id
+        erb :view
+      else
+        erb :list
+        #TODO: flash that the record didn't belong to that user
+      end
+    else
+      redirect :list
+      #TODO: flash that we couldn't find that record
+    end
+  end
+
+  post '/add_data' do
+    user = env['warden'].user
+    record = user.records.get(params['inputRecord'])
+    if record && record.user_id == user.id
+      datum = record.data.new
+      datum.value = params['inputData']
+      datum.date = Time.new
+      datum.save
+      redirect to("/view_record/" + record.id.to_s)
+    else
+      redirect :dash
+      #TODO: Flash that user id didn't match record id
     end
   end
 

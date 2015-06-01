@@ -1,0 +1,20 @@
+<div class="page-header">
+  <h1> View Record: <%= @record %> </h1>
+</div>
+<div class="col-md-5">
+  <form action='/add_data' method='POST'>
+    <div class='form-group'>
+      <label for="inputData">Add Data: </label>
+      <input type="text" class="form-control" id="inputData" placeholder="(...)" name="inputData" required autofocus>
+    </div>
+    <input type="hidden" id="inputRecord" name="inputRecord" value="<%= @record_id %>">
+    <button class="btn btn-lg btn-success btn-block" type="submit">Add to Record</button>
+  </form>
+</div>
+<div class="col-md-5">
+  <ol>
+    <% @data.each do |datum| %>
+      <li> <%= datum.value %> </li>
+    <% end %>
+  </ol>
+</div>
