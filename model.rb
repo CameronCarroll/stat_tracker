@@ -4,7 +4,7 @@ require 'data_mapper'
 require 'dm-sqlite-adapter'
 require 'bcrypt'
 
-DataMapper.setup(:default, "sqlite://#{Dir.pwd}/db.sqlite")
+DataMapper.setup(:default, ENV['DATABASE_URL'] || 'postgres://localhost/mydb')
 
 class User
   include DataMapper::Resource
