@@ -1,10 +1,10 @@
 <div class="page-header">
-  <h1> Your Dashboard <small> (username I guess?))</small></h1>
+  <h1> Your Dashboard <small>[<%= @user.username %>]</small></h1>
 </div>
 <div class="row">
   <div class="col-md-5">
     <ul class="list-group">
-      <li class="list-group-item"> <a href="/view"> View List </a> </li>
+      <li class="list-group-item"> <a href="/list"> View List </a> </li>
       <li class="list-group-item"> <a href="/new">Track Something New</a> </li>
       <li class="list-group-item"> <a href="/auth/logout">Log Out</a> </li>
     </ul>
